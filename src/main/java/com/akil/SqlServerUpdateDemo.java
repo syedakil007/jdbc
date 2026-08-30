@@ -1,14 +1,13 @@
+package com.akil;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class SqlServerUpdateDemo {
+import com.akil.properties.LoadProperties;
 
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/sakila?useSSL=false&allowPublicKeyRetrieval=true";
-    private static final String USER = "root";
-    private static final String PASS = "Akil@12345";
+public class SqlServerUpdateDemo {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -32,7 +31,11 @@ public class SqlServerUpdateDemo {
 
         String sql = "UPDATE actor SET first_name = ?, last_name = ? WHERE actor_id = ?";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        String dbUrl = LoadProperties.getProperty("db.url");
+        String dbUsername = LoadProperties.getProperty("db.username");
+        String dbPassword = LoadProperties.getProperty("db.password");
+
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, firstName);
